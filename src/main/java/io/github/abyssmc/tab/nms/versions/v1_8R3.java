@@ -28,26 +28,18 @@ public class v1_8R3 extends TabNMS<IChatBaseComponent> {
 
     @Override
     public void sendTab(Player player) {
-        try {
-            final PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter(header);
-            final Field f = packet.getClass().getDeclaredField("b");
+        final PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter(header);
+        packet.b = footer;
 
-            f.setAccessible(true);
-            f.set(packet, footer);
+        final EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
 
-            final EntityPlayer entityPlayer = ((CraftPlayer)player).getHandle();
+        entityPlayer.playerConnection.sendPacket(packet);
+        entityPlayer.listName = CraftChatMessage.fromString(prefix.getPrefix(entityPlayer.getUniqueID()) + player.getName())[0];
 
-            entityPlayer.playerConnection.sendPacket(packet);
-            entityPlayer.listName = CraftChatMessage.fromString(prefix.getPrefix(entityPlayer.getUniqueID()) + player.getName())[0];
+        final PacketPlayOutPlayerInfo info = new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.UPDATE_DISPLAY_NAME, entityPlayer);
 
-            final PacketPlayOutPlayerInfo info = new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.UPDATE_DISPLAY_NAME, entityPlayer);
-
-            for (final EntityPlayer other : players) {
-                other.playerConnection.sendPacket(info);
-            }
-
-        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | SecurityException e) {
-            e.printStackTrace();
+        for (final EntityPlayer other : players) {
+            other.playerConnection.sendPacket(info);
         }
     }
 
