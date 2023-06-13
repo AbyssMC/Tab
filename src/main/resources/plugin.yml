@@ -1,0 +1,10 @@
+name: Tab
+description: A heavy optimised tab plugin
+author: iChocoMC
+main: io.github.abyssmc.tab.TabPlugin
+version: 1.0
+softdepend: [ LuckPerms ]
+
+commands:
+  tab:
+    description: "See all commands from tab"

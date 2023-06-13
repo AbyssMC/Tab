@@ -1,0 +1,16 @@
+# You can add multiline with:
+# - " Line 1"
+# - " Line 2, etc"
+
+# One line: " Line 1"
+
+header:
+ - " &8&l⋙ &8⌈&f1.7&8⌉ &8&l⋘ &4&lABYSSMC &8• &c&lPRISONOP &8&l⋙ &8⌈&f1.20&8⌉ &8&l⋘"
+ - ""
+
+footer:
+ - ""
+ - " &7⊳ &c&ntienda.abyssmc.club&r &8┃ &c&ndiscord.abyssmc.club&r &7⊲ "
+ - ""
+
+default-prefix: "&c "
