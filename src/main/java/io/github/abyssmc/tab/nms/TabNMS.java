@@ -1,13 +1,19 @@
 package io.github.abyssmc.tab.nms;
 
+import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import org.bukkit.entity.Player;
 
 import io.github.abyssmc.tab.prefix.PlayerPrefix;
 
-public abstract class TabNMS<C> {
+/**
+ *
+ * @param <V> Version of {@link IChatBaseComponent}.
+ *
+ */
+public abstract class TabNMS<V> {
 
-    protected C header;
-    protected C footer;
+    protected V header;
+    protected V footer;
 
     protected PlayerPrefix prefix;
 
@@ -26,5 +32,5 @@ public abstract class TabNMS<C> {
     }
 
     public abstract void sendTab(Player player);
-    public abstract C createMessage(String text);
+    public abstract V createMessage(String text);
 }
