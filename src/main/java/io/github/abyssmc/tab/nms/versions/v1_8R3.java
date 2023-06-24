@@ -28,22 +28,23 @@ public class v1_8R3 extends TabNMS<IChatBaseComponent> {
 
     @Override
     public void sendTab(Player player) {
+        String nameWithPrefix = prefix.getPrefix(player.getUniqueId()) + player.getName();
         try {
-            final PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter(header);
-            final Field f = packet.getClass().getDeclaredField("b");
+            final PacketPlayOutPlayerListHeaderFooter listPacket = new PacketPlayOutPlayerListHeaderFooter(header);
+            final Field footerField = listPacket.getClass().getDeclaredField("b");
 
-            f.setAccessible(true);
-            f.set(packet, footer);
+            footerField.setAccessible(true);
+            footerField.set(listPacket, footer);
 
-            final EntityPlayer entityPlayer = ((CraftPlayer)player).getHandle();
+            final EntityPlayer entityCraftPlayer = ((CraftPlayer)player).getHandle();
 
-            entityPlayer.playerConnection.sendPacket(packet);
-            entityPlayer.listName = CraftChatMessage.fromString(prefix.getPrefix(entityPlayer.getUniqueID()) + player.getName())[0];
+            entityCraftPlayer.playerConnection.sendPacket(listPacket);
+            entityCraftPlayer.listName = CraftChatMessage.fromString(nameWithPrefix)[0];
 
-            final PacketPlayOutPlayerInfo info = new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.UPDATE_DISPLAY_NAME, entityPlayer);
+            final PacketPlayOutPlayerInfo playerInfoPacket = new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.UPDATE_DISPLAY_NAME, entityCraftPlayer);
 
-            for (final EntityPlayer other : players) {
-                other.playerConnection.sendPacket(info);
+            for (final EntityPlayer connectedPlayer : players) {
+                connectedPlayer.playerConnection.sendPacket(playerInfoPacket);
             }
 
         } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | SecurityException e) {
